@@ -1,0 +1,54 @@
+﻿
+@model List<Product>
+
+@{ ViewData["Title"] = "Home Page"; }
+
+
+<section class="py-5">
+    <div class="container px-4 px-lg-5 mt-5">
+        <div class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4 justify-content-center">
+            @foreach (var i in Model)
+            {
+<div class="col mb-5">
+    <div class="card h-100">
+        <!-- Product image-->
+        @if (string.IsNullOrEmpty(i.ImageUrl))
+        {
+<img class="card-img-top" src="https://dummyimage.com/450x300/dee2e6/6c757d.jpg" alt="..." /> }
+else
+{
+<img class="card-img-top" src="/@i.ImageUrl" alt="..." />                }
+
+        <!-- Product details-->
+        <div class="card-body p-4">
+            <div class="text-center">
+                <!-- Product name-->
+                <h5 class="fw-bolder">@i.Name</h5>
+                <!-- Product price-->
+                <span class="text-muted"> @Html.FormatValue(i.Price,"(0:#.##0)VND")</span>
+            </div>
+        </div>
+        <!-- Product actions-->
+        <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
+            <div class="text-center"><a class="btn btn-outline-dark mt-auto" asp-controller="Cart" asp-action="AddToCart" asp-route-productId="@i.Id">ADD to card</a></div>
+        </div>
+    </div>
+</div>      }
+        </div>
+    </div>
+</section>
+<div>
+    <ul class="pagination">
+        <li class="page-item @(ViewBag.PageIndex == 1 ? "disabled":"")">
+            <a class="page-link" asp-action="Index" asp-route-page="1">&laquo;</a>
+        </li>
+        @for (var i = 1; i <= ViewBag.PageSum; i++)
+        {
+<li class="page-item @(ViewBag.PageIndex == i ? "active" : "")">
+    <a class="page-link" asp-action="Index" asp-route-page="@i">@i</a>
+</li>}
+        <li class="page-item @(ViewBag.PageIndex == @ViewBag.PageSum ? "disabled" : "")">
+            <a class="page-link" asp-action="Index" asp-route-page="@ViewBag.PageSum">&raquo;</a>
+        </li>
+    </ul>
+</div>
